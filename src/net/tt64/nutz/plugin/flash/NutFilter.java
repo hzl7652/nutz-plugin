@@ -139,8 +139,8 @@ public class NutFilter implements Filter {
 				req.setAttribute("message",
 						session.getAttribute(ServerRedirectView.MESSAGE));
 			}
-			session.setAttribute(ServerRedirectView.REFERER, null);
-			session.setAttribute(ServerRedirectView.MESSAGE, null);
+			session.removeAttribute(ServerRedirectView.REFERER);
+			session.removeAttribute(ServerRedirectView.MESSAGE);
 		}
 	}
 }

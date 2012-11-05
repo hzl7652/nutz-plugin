@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="nor" default="run" basedir=".">
+    <description>
+       Nutz-plugin build xml
+    </description>
+    
+    <property environment="env" />
+
+	<property name="PROJECT_HOME" value="." />
+	<property name="JAVA_HOME" value="${env.JAVA_HOME}" />
+	<property name="DEPHOME" value="${PROJECT_HOME}/lib" />
+	<property name="OUTPUT" value="${PROJECT_HOME}/build/output" />
+	<property name="SRC" location="${PROJECT_HOME}/src" />
+	<property name="TMP" value="${PROJECT_HOME}/build/temp" />
+	<property name="JDK_VERSION" value="1.6" />
+	<property name="v" value="-0.a.1.jar" />
+	<path id="CLASSPATH">
+		<fileset dir="${TOMCAT_HOME}/lib" casesensitive="no">
+			<include name="*.jar" />
+			<exclude name="servlet-api*.jar"/>
+		</fileset>
+		<fileset dir="${DEPHOME}" casesensitive="no">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement location="${JAVA_HOME}/lib/rt.jar" />
+	</path>
+	
+	<target name="init">
+		<mkdir dir="${TMP}" />
+	</target>
+	
+	<target name="compile" depends="init">
+		<javac srcdir="${SRC}" destdir="${TMP}" debuglevel="lines,vars,source" debug="true" 
+			source="${JDK_VERSION}" target="${JDK_VERSION}" 
+			encoding="UTF-8" listfiles="off"
+			includeantruntime="false">
+			<compilerarg value="-Xlint:deprecation" />
+			<classpath refid="CLASSPATH" />
+		</javac>
+		<copy todir="${TMP}">
+			<fileset dir="${SRC}" excludes="**/*.java" />
+		</copy>
+	</target>
+	<target name="coc" depends="compile">
+		<jar destfile="${OP}/nutz-plugin-coc${v}.jar" basedir="${TMP}" includes="net.tt64.nutz.plugin.coc.**"/>
+	</target>
+	<target name="flash" depends="compile">
+		<jar destfile="${OP}/nutz-plugin-flash${v}.jar" basedir="${TMP}" includes="net.tt64.nutz.plugin.flash.**"/>
+	</target>
+	<target name="ncode" depends="compile">
+		<jar destfile="${OP}/nutz-plugin-ncode${v}.jar" basedir="${TMP}" includes="net.tt64.nutz.plugin.ncode.**"/>
+	</target>
+	<target name="scoffold" depends="compile">
+		<jar destfile="${OP}/nutz-plugin-scoffold${v}.jar" basedir="${TMP}" includes="net.tt64.nutz.plugin.scoffold.**"/>
+	</target>
+	<target name="utils" depends="compile">
+		<jar destfile="${OP}/nutz-plugin-utils${v}.jar" basedir="${TMP}" includes="net.tt64.nutz.plugin.utils.**"/>
+	</target>
+	<target name="jar" depends="coc,flash,utils,ncode,scoffold">
+		<jar destfile="${OP}/nutz-plugin-all${v}.jar" basedir="${TMP}" includes="**" />
+	</target>
+</project>
